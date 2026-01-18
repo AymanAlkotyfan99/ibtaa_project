@@ -47,6 +47,20 @@
         <div class="collapse navbar-collapse justify-content-end">
           <ul class="navbar-nav gap-4 align-items-center">
             <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-white-50 hover-glow"
+                href="index.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-white-50 hover-glow"
+                href="marketplace.html"
+                >Marketplace</a
+              >
+            </li>
+            <li class="nav-item">
               <span id="userRole" class="text-white-50 small me-2"></span>
             </li>
             <li class="nav-item">
@@ -96,9 +110,7 @@
                 <i class="bi bi-people fs-1 text-secondary-accent mb-3"></i>
                 <h4>User Management</h4>
                 <p class="text-white-50">Manage protocol participants.</p>
-                <button class="btn btn-outline-light btn-sm w-100" onclick="showUsers()">
-                  Access Users
-                </button>
+                <a href="admin-users.html" class="btn btn-outline-light btn-sm w-100">Access Users</a>
               </div>
             </div>
             <div class="col-md-6 col-lg-4">
@@ -106,9 +118,7 @@
                 <i class="bi bi-currency-dollar fs-1 text-accent mb-3"></i>
                 <h4>Subscription Plans</h4>
                 <p class="text-white-50">Define and manage pricing.</p>
-                <button class="btn btn-outline-light btn-sm w-100" onclick="showPlans()">
-                  Manage Plans
-                </button>
+                <a href="admin-plans.html" class="btn btn-outline-light btn-sm w-100">Manage Plans</a>
               </div>
             </div>
           </div>
@@ -159,9 +169,9 @@
                   class="d-flex justify-content-between align-items-center mb-4"
                 >
                   <h4>Asset Inventory</h4>
-                  <button id="addProductBtn" class="btn btn-sm btn-outline-light" disabled>
+                  <a id="addProductBtn" href="add-product.html" class="btn btn-sm btn-outline-light" disabled>
                     + New Asset
-                  </button>
+                  </a>
                 </div>
                 <div class="table-responsive">
                   <table class="table table-dark table-hover bg-transparent">
@@ -367,6 +377,7 @@
               <p class="text-white-50 small">Subscription required to list assets.</p>
               <button class="btn btn-custom btn-sm w-100" onclick="showSubscriptionPlans()">View Plans</button>
             `;
+            document.getElementById('addProductBtn').disabled = true;
           }
         } catch (error) {
           statusDiv.innerHTML = '<p class="text-danger">Error loading status</p>';
@@ -589,14 +600,6 @@
         } catch (error) {
           alert('Error rejecting subscription');
         }
-      }
-      
-      function showUsers() {
-        alert('User management coming soon!');
-      }
-      
-      function showPlans() {
-        alert('Plan management coming soon!');
       }
       
       // Initialize

@@ -195,21 +195,34 @@
 
       // Registration Form Handler
       const API_BASE = 'http://localhost:8000/api';
+      let isSubmitting = false;
       
       document.getElementById('registerForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        // Prevent multiple submissions
+        if (isSubmitting) return;
+        isSubmitting = true;
+        
         const formData = new FormData(this);
         const errorDiv = document.getElementById('errorMessage');
         const successDiv = document.getElementById('successMessage');
+        const submitBtn = this.querySelector('button[type="submit"]');
         
         errorDiv.classList.add('d-none');
         successDiv.classList.add('d-none');
+        
+        // Disable submit button during submission
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating Identity...';
         
         // Validate passwords match
         if (formData.get('password') !== formData.get('password_confirm')) {
           errorDiv.textContent = 'Security keys do not match.';
           errorDiv.classList.remove('d-none');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Identity';
+          isSubmitting = false;
           return;
         }
         
@@ -240,9 +253,13 @@
             successDiv.textContent = 'Identity created successfully! Redirecting to login...';
             successDiv.classList.remove('d-none');
             
+            // Clear form
+            document.getElementById('registerForm').reset();
+            
+            // Redirect after 1.5 seconds
             setTimeout(() => {
               window.location.href = 'login.html';
-            }, 2000);
+            }, 1500);
           } else {
             // Handle validation errors
             if (typeof data === 'object') {
@@ -252,10 +269,16 @@
               errorDiv.textContent = data.detail || 'Registration failed. Please try again.';
             }
             errorDiv.classList.remove('d-none');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create Identity';
+            isSubmitting = false;
           }
         } catch (error) {
           errorDiv.textContent = 'Connection error. Please try again later.';
           errorDiv.classList.remove('d-none');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Identity';
+          isSubmitting = false;
         }
       });
     </script>

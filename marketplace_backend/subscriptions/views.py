@@ -13,8 +13,19 @@ class SubscriptionPlansView(views.APIView):
 
     def get(self, request):
         settings = AdminSettings.load()
-        serializer = SubscriptionPlanSerializer(settings)
-        return Response(serializer.data)
+        plans = []
+        subscription_plans = settings.get_subscription_plans()
+        for i, plan in enumerate(subscription_plans or []):
+            plan_data = {
+                'id': i,
+                'name': plan.get('name', f'Plan {i}'),
+                'price': plan.get('price', 0),
+                'duration_days': plan.get('duration_days', 30),
+                'max_products': plan.get('max_products'),
+                'description': plan.get('description', ''),
+            }
+            plans.append(plan_data)
+        return Response(plans)
 
 class MerchantSubscriptionViewSet(viewsets.ModelViewSet):
     serializer_class = MerchantSubscriptionSerializer
@@ -32,6 +43,22 @@ class MerchantSubscriptionViewSet(viewsets.ModelViewSet):
         if self.request.user.role != 'MERCHANT':
             raise permissions.PermissionDenied("Only merchants can subscribe.")
         serializer.save(merchant=self.request.user)
+
+    def partial_update(self, request, *args, **kwargs):
+        """Allow admins to approve or reject subscriptions"""
+        if request.user.role != 'ADMIN':
+            return Response({"error": "Only admins can update subscriptions"}, status=status.HTTP_403_FORBIDDEN)
+        
+        subscription = self.get_object()
+        status_update = request.data.get('status')
+        
+        if status_update == 'APPROVED':
+            SubscriptionService.approve_subscription(subscription)
+        elif status_update == 'REJECTED':
+            reason = request.data.get('rejection_reason', 'No reason provided')
+            SubscriptionService.reject_subscription(subscription, reason)
+        
+        return Response(MerchantSubscriptionSerializer(subscription).data)
 
     @action(detail=True, methods=['post'], permission_classes=[permissions.IsAdminUser])
     def approve(self, request, pk=None):

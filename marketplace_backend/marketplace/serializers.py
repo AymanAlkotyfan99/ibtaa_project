@@ -2,10 +2,17 @@ from rest_framework import serializers
 from .models import Product, Order, OrderItem
 
 class ProductSerializer(serializers.ModelSerializer):
+    merchant_name = serializers.SerializerMethodField()
+    
     class Meta:
         model = Product
-        fields = '__all__'
-        read_only_fields = ['merchant', 'created_at']
+        fields = ['id', 'name', 'description', 'price', 'category', 'image', 'is_active', 'merchant', 'merchant_name', 'created_at']
+        read_only_fields = ['merchant', 'created_at', 'merchant_name']
+
+    def get_merchant_name(self, obj):
+        if hasattr(obj.merchant, 'merchant_profile'):
+            return obj.merchant.merchant_profile.business_name
+        return obj.merchant.email
 
     def create(self, validated_data):
         validated_data['merchant'] = self.context['request'].user

@@ -10,6 +10,15 @@ class MerchantProfileSerializer(serializers.ModelSerializer):
         fields = ['business_name', 'is_subscribed']
         read_only_fields = ['is_subscribed']
 
+class UserSerializer(serializers.ModelSerializer):
+    """Serializer for user display and management (admin)"""
+    merchant_profile = MerchantProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'role', 'is_active', 'date_joined', 'merchant_profile']
+        read_only_fields = ['id', 'date_joined', 'email']
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     role = serializers.ChoiceField(choices=User.Role.choices)
