@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AETHER | Premium Marketplace</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+  </head>
+  <body class="bg-black text-white overflow-x-hidden">
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top p-4">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand text-white fw-bold fs-3 tracking-in-expand"
+          href="#"
+          >AETHER</a
+        >
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <i class="bi bi-list text-white fs-2"></i>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-end"
+          id="navbarNav"
+        >
+          <ul class="navbar-nav gap-4">
+            <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-white-50 hover-glow"
+                href="#home"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-white-50 hover-glow"
+                href="#about"
+                >About</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-white-50 hover-glow"
+                href="#features"
+                >Features</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-white-50 hover-glow"
+                href="#roles"
+                >Roles</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link text-uppercase text-accent hover-glow"
+                href="login.html"
+                >Login</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section
+      id="home"
+      class="min-vh-100 d-flex align-items-center position-relative section-padding"
+    >
+      <div class="container position-relative z-2">
+        <div class="row">
+          <div class="col-lg-8">
+            <h5 class="text-accent mb-3 hero-reveal">
+              PREMIUM COMMERCE ECOSYSTEM
+            </h5>
+            <h1 class="display-1 fw-bold mb-4 hero-reveal title-gradient">
+              MARKETPLACE <br />
+              EVOLVED
+            </h1>
+            <p
+              class="lead text-white-50 mb-5 w-75 hero-reveal description-text"
+            >
+              A strictly managed, multi-role platform where premier Merchants
+              connect with discerning Customers. Powered by secure subscription
+              enforcement and verified trading.
+            </p>
+            <div class="hero-reveal d-flex gap-3">
+              <a
+                href="register.html"
+                class="btn btn-custom btn-lg position-relative overflow-hidden magnetic-btn"
+              >
+                <span class="position-relative z-1">Start Trading</span>
+                <div class="btn-fill"></div>
+              </a>
+              <a
+                href="#about"
+                class="btn btn-outline-light btn-lg rounded-pill px-5 magnetic-btn"
+                >Learn More</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll Indicator -->
+      <div
+        class="position-absolute bottom-0 start-50 translate-middle-x mb-5 scroll-indicator"
+      >
+        <div class="mouse">
+          <div class="wheel"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee Text -->
+    <div class="marquee-track py-5 bg-glass border-y-glass">
+      <div
+        class="marquee-content display-1 fw-bold text-uppercase text-outline"
+      >
+        Merchant • Subscription • Secure • Verified • Admin • Customer •
+        Commerce • Merchant • Subscription • Secure •
+      </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding position-relative">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="card-stack position-relative ps-lg-5">
+              <div class="glass-card p-5 reveal-left" data-speed="0.8">
+                <i class="bi bi-shield-check fs-1 text-accent mb-3"></i>
+                <h3 class="mb-3">Verified Merchants</h3>
+                <p class="text-white-50">
+                  Only subscribed and verified merchants can list products.
+                  Quality over quantity.
+                </p>
+              </div>
+              <div class="glass-card p-5 mt-4 ms-5 reveal-left" data-speed="1">
+                <i class="bi bi-gem fs-1 text-secondary-accent mb-3"></i>
+                <h3 class="mb-3">Premium Access</h3>
+                <p class="text-white-50">
+                  Customers get access to an exclusive catalog of approved
+                  high-tier vendors.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 ps-lg-5">
+            <h2 class="display-4 fw-bold mb-4 reveal-text">
+              Strict <span class="text-gradient">Enforcement</span>
+            </h2>
+            <p class="lead text-white-50 mb-4 reveal-text">
+              Our platform ensures fairness and security through a rigorous
+              subscription model managed by Admins.
+            </p>
+            <ul class="list-unstyled d-flex flex-column gap-3 reveal-text">
+              <li class="d-flex align-items-center gap-3">
+                <i class="bi bi-check-circle-fill text-accent"></i>
+                <span>Merchant Subscription Plans</span>
+              </li>
+              <li class="d-flex align-items-center gap-3">
+                <i class="bi bi-check-circle-fill text-accent"></i>
+                <span>Admin Approval Workflow</span>
+              </li>
+              <li class="d-flex align-items-center gap-3">
+                <i class="bi bi-check-circle-fill text-accent"></i>
+                <span>Proof of Payment Verification</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section-padding">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h2 class="display-3 fw-bold reveal-up">Platform Features</h2>
+            <p class="lead text-white-50 mt-3 reveal-up">
+              Everything you need for secure commerce
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100 reveal-up">
+              <i class="bi bi-credit-card fs-1 text-accent mb-3"></i>
+              <h4>Subscription Management</h4>
+              <p class="text-white-50">
+                Flexible subscription plans with transparent pricing set by
+                platform administrators.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100 reveal-up">
+              <i
+                class="bi bi-file-earmark-check fs-1 text-secondary-accent mb-3"
+              ></i>
+              <h4>Payment Proof Upload</h4>
+              <p class="text-white-50">
+                Merchants submit payment proof for admin verification before
+                activation.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100 reveal-up">
+              <i class="bi bi-shop-window fs-1 text-accent mb-3"></i>
+              <h4>Product Listings</h4>
+              <p class="text-white-50">
+                Active merchants can create, edit, and manage their product
+                catalog.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100 reveal-up">
+              <i class="bi bi-cart-check fs-1 text-secondary-accent mb-3"></i>
+              <h4>Order Management</h4>
+              <p class="text-white-50">
+                Customers browse products and place orders from verified
+                merchants only.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100 reveal-up">
+              <i class="bi bi-person-check fs-1 text-accent mb-3"></i>
+              <h4>Role-Based Access</h4>
+              <p class="text-white-50">
+                Dedicated dashboards for Admin, Merchant, and Customer with
+                appropriate permissions.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-4 h-100 reveal-up">
+              <i class="bi bi-shield-lock fs-1 text-secondary-accent mb-3"></i>
+              <h4>Strict Enforcement</h4>
+              <p class="text-white-50">
+                Backend and frontend guards prevent unauthorized actions by
+                unsubscribed users.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Roles Section -->
+    <section
+      id="roles"
+      class="section-padding position-relative overflow-hidden"
+    >
+      <div class="absolute-bg-shape"></div>
+
+      <div class="container position-relative z-1">
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h2 class="display-3 fw-bold reveal-up">Choose Your Role</h2>
+            <p class="lead text-white-50 mt-3 reveal-up">
+              Join the marketplace as an Admin, Merchant, or Customer
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+          <!-- Admin Role -->
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-5 text-center h-100 reveal-scale">
+              <div class="mb-4">
+                <i class="bi bi-person-gear display-3 text-accent"></i>
+              </div>
+              <h3 class="mb-3">Admin</h3>
+              <p class="text-white-50 mb-4">
+                Manage the platform, set subscription prices, approve merchant
+                applications, and oversee all operations.
+              </p>
+              <ul class="list-unstyled text-start text-white-50 small">
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Define
+                  subscription plans
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Review payment
+                  proofs
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Approve/Reject
+                  merchants
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Manage all users
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Merchant Role -->
+          <div class="col-md-6 col-lg-4">
+            <div
+              class="glass-card p-5 text-center h-100 reveal-scale"
+              style="border-color: var(--color-secondary-accent)"
+            >
+              <div class="mb-4">
+                <i class="bi bi-shop display-3 text-secondary-accent"></i>
+              </div>
+              <h3 class="mb-3">Merchant</h3>
+              <p class="text-white-50 mb-4">
+                Subscribe to unlock store access, list products, and connect
+                with customers on the platform.
+              </p>
+              <ul class="list-unstyled text-start text-white-50 small">
+                <li class="mb-2">
+                  <i class="bi bi-check text-secondary-accent me-2"></i>View
+                  subscription plans
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-secondary-accent me-2"></i>Upload
+                  payment proof
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-secondary-accent me-2"></i>Create
+                  product listings
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-secondary-accent me-2"></i>Manage
+                  orders
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Customer Role -->
+          <div class="col-md-6 col-lg-4">
+            <div class="glass-card p-5 text-center h-100 reveal-scale">
+              <div class="mb-4">
+                <i class="bi bi-person display-3 text-accent"></i>
+              </div>
+              <h3 class="mb-3">Customer</h3>
+              <p class="text-white-50 mb-4">
+                Browse verified merchants, explore premium products, and place
+                orders with confidence.
+              </p>
+              <ul class="list-unstyled text-start text-white-50 small">
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Browse active
+                  merchants
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>View product
+                  catalogs
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Place orders
+                </li>
+                <li class="mb-2">
+                  <i class="bi bi-check text-accent me-2"></i>Track order
+                  history
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="row mt-5">
+          <div class="col-12 text-center reveal-up">
+            <a href="register.html" class="btn btn-custom btn-lg magnetic-btn">
+              Create Your Account
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="py-4 text-center text-white-50">
+      <div class="container">
+        <p class="mb-0">&copy; 2026 AETHER Marketplace. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+  </body>
+</html>

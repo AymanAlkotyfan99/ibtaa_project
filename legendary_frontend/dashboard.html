@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Command Center | AETHER</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+  </head>
+  <body class="bg-black text-white overflow-x-hidden">
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- WebGL Background -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top p-4">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand text-white fw-bold fs-3 tracking-in-expand"
+          href="index.html"
+          >AETHER</a
+        >
+        <div class="collapse navbar-collapse justify-content-end">
+          <ul class="navbar-nav gap-4 align-items-center">
+            <li class="nav-item">
+              <span id="userRole" class="text-white-50 small me-2"></span>
+            </li>
+            <li class="nav-item">
+              <button
+                id="logoutBtn"
+                class="btn btn-sm btn-outline-light rounded-pill px-4"
+              >
+                Disconnect
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <section class="section-padding pt-5 mt-5 position-relative z-2">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12">
+            <h1 class="display-4 fw-bold hero-reveal">
+              Welcome, <span id="userEmail" class="text-accent"></span>
+            </h1>
+            <p class="text-white-50 lead hero-reveal">
+              System Status: <span class="text-success">OPERATIONAL</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="d-none">
+          <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+              <div class="glass-card p-4 h-100 reveal-up">
+                <i class="bi bi-shield-lock fs-1 text-accent mb-3"></i>
+                <h4>Subscription Approvals</h4>
+                <p class="text-white-50">
+                  Review pending merchant payment proofs.
+                </p>
+                <button class="btn btn-custom btn-sm w-100" onclick="showApprovals()">
+                  Review Queue
+                </button>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="glass-card p-4 h-100 reveal-up">
+                <i class="bi bi-people fs-1 text-secondary-accent mb-3"></i>
+                <h4>User Management</h4>
+                <p class="text-white-50">Manage protocol participants.</p>
+                <button class="btn btn-outline-light btn-sm w-100" onclick="showUsers()">
+                  Access Users
+                </button>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="glass-card p-4 h-100 reveal-up">
+                <i class="bi bi-currency-dollar fs-1 text-accent mb-3"></i>
+                <h4>Subscription Plans</h4>
+                <p class="text-white-50">Define and manage pricing.</p>
+                <button class="btn btn-outline-light btn-sm w-100" onclick="showPlans()">
+                  Manage Plans
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Approvals Section -->
+          <div id="approvalsSection" class="mt-5 d-none">
+            <h3 class="mb-4">Pending Payment Approvals</h3>
+            <div class="glass-card p-4">
+              <div class="table-responsive">
+                <table class="table table-dark table-hover bg-transparent">
+                  <thead>
+                    <tr>
+                      <th>Merchant</th>
+                      <th>Store</th>
+                      <th>Plan</th>
+                      <th>Submitted</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="approvalsTable">
+                    <tr>
+                      <td colspan="5" class="text-center text-white-50 py-4">
+                        Loading...
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Merchant Dashboard -->
+        <div id="merchantDashboard" class="d-none">
+          <div class="row g-4">
+            <div class="col-md-4">
+              <div class="glass-card p-4 h-100 reveal-up">
+                <i class="bi bi-shop fs-1 text-accent mb-3"></i>
+                <h4>Store Status</h4>
+                <div id="subscriptionStatus">
+                  <!-- Filled by JS -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-8">
+              <div class="glass-card p-4 h-100 reveal-up">
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4"
+                >
+                  <h4>Asset Inventory</h4>
+                  <button id="addProductBtn" class="btn btn-sm btn-outline-light" disabled>
+                    + New Asset
+                  </button>
+                </div>
+                <div class="table-responsive">
+                  <table class="table table-dark table-hover bg-transparent">
+                    <thead>
+                      <tr>
+                        <th>Asset Name</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="productsTable">
+                      <tr>
+                        <td colspan="4" class="text-center text-white-50 py-4">
+                          No assets detected.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subscription Plans for Merchants -->
+          <div id="merchantPlansSection" class="mt-5 d-none">
+            <h3 class="mb-4">Available Subscription Plans</h3>
+            <div class="row g-4" id="plansContainer">
+              <!-- Plans loaded dynamically -->
+            </div>
+          </div>
+
+          <!-- Payment Proof Upload Modal -->
+          <div class="modal fade" id="uploadProofModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content bg-dark text-white border-secondary">
+                <div class="modal-header border-secondary">
+                  <h5 class="modal-title">Upload Payment Proof</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="uploadProofForm">
+                    <div class="mb-3">
+                      <label class="form-label text-white-50">Select Plan</label>
+                      <select id="selectedPlan" class="form-select bg-transparent text-white border-secondary">
+                        <!-- Options loaded dynamically -->
+                      </select>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label text-white-50">Payment Proof Image</label>
+                      <input type="file" id="proofFile" class="form-control bg-transparent text-white border-secondary" accept="image/*" required>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label text-white-50">Notes (Optional)</label>
+                      <textarea id="proofNotes" class="form-control bg-transparent text-white border-secondary" rows="2"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer border-secondary">
+                  <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-custom" onclick="submitPaymentProof()">Submit Proof</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Dashboard -->
+        <div id="customerDashboard" class="d-none">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="glass-card p-4 mb-4 reveal-up">
+                <h3 class="mb-3">Active Marketplaces</h3>
+                <p class="text-white-50">Browsing verified vendor nodes.</p>
+              </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="row g-4">
+              <!-- Products loaded dynamically -->
+              <div class="col-12 text-center text-white-50 py-5">
+                <p>Loading products from active merchants...</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Order History Section -->
+          <div class="mt-5">
+            <h3 class="mb-4">Your Orders</h3>
+            <div class="glass-card p-4">
+              <div class="table-responsive">
+                <table class="table table-dark table-hover bg-transparent">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Product</th>
+                      <th>Merchant</th>
+                      <th>Status</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ordersTable">
+                    <tr>
+                      <td colspan="5" class="text-center text-white-50 py-4">
+                        No orders yet.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+    <script>
+      const API_BASE = 'http://localhost:8000/api';
+      
+      // Check authentication
+      const token = localStorage.getItem('access_token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      
+      if (!token) {
+        window.location.href = 'login.html';
+      }
+      
+      // Update UI with user info
+      document.getElementById('userEmail').textContent = user.email || 'User';
+      document.getElementById('userRole').textContent = `${user.role || 'USER'} PROTOCOL`;
+      
+      // Show appropriate dashboard based on role
+      function initDashboard() {
+        const role = user.role?.toUpperCase();
+        
+        if (role === 'ADMIN') {
+          document.getElementById('adminDashboard').classList.remove('d-none');
+        } else if (role === 'MERCHANT') {
+          document.getElementById('merchantDashboard').classList.remove('d-none');
+          loadMerchantStatus();
+        } else {
+          document.getElementById('customerDashboard').classList.remove('d-none');
+          loadProducts();
+        }
+      }
+      
+      // Logout handler
+      document.getElementById('logoutBtn').addEventListener('click', function() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        window.location.href = 'login.html';
+      });
+      
+      // API helper with auth
+      async function apiCall(endpoint, options = {}) {
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          ...options.headers
+        };
+        
+        const response = await fetch(`${API_BASE}${endpoint}`, {
+          ...options,
+          headers
+        });
+        
+        if (response.status === 401) {
+          // Token expired
+          localStorage.removeItem('access_token');
+          window.location.href = 'login.html';
+        }
+        
+        return response;
+      }
+      
+      // Merchant: Load subscription status
+      async function loadMerchantStatus() {
+        const statusDiv = document.getElementById('subscriptionStatus');
+        
+        try {
+          const response = await apiCall('/auth/me/');
+          const data = await response.json();
+          
+          if (data.is_subscribed) {
+            statusDiv.innerHTML = `
+              <div class="badge bg-success p-2 w-100 mb-3">ACTIVE LINK</div>
+              <p class="text-white-50 small">Subscription valid until: ${data.subscription_end || 'N/A'}</p>
+            `;
+            document.getElementById('addProductBtn').disabled = false;
+            loadMerchantProducts();
+          } else {
+            statusDiv.innerHTML = `
+              <div class="badge bg-danger p-2 w-100 mb-3">OFFLINE / UNPAID</div>
+              <p class="text-white-50 small">Subscription required to list assets.</p>
+              <button class="btn btn-custom btn-sm w-100" onclick="showSubscriptionPlans()">View Plans</button>
+            `;
+          }
+        } catch (error) {
+          statusDiv.innerHTML = '<p class="text-danger">Error loading status</p>';
+        }
+      }
+      
+      // Show subscription plans for merchants
+      async function showSubscriptionPlans() {
+        const section = document.getElementById('merchantPlansSection');
+        section.classList.toggle('d-none');
+        
+        if (!section.classList.contains('d-none')) {
+          try {
+            const response = await apiCall('/plans/');
+            const plans = await response.json();
+            
+            const container = document.getElementById('plansContainer');
+            container.innerHTML = plans.map(plan => `
+              <div class="col-md-4">
+                <div class="glass-card p-4 text-center">
+                  <h4>${plan.name}</h4>
+                  <p class="display-5 text-accent fw-bold">$${plan.price}</p>
+                  <p class="text-white-50">${plan.duration_days} days</p>
+                  <p class="small text-white-50">${plan.description || ''}</p>
+                  <button class="btn btn-custom w-100 mt-3" onclick="selectPlan(${plan.id}, '${plan.name}')">
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+            `).join('');
+            
+            // Also populate the modal select
+            const select = document.getElementById('selectedPlan');
+            select.innerHTML = plans.map(p => `<option value="${p.id}">${p.name} - $${p.price}</option>`).join('');
+          } catch (error) {
+            console.error('Error loading plans:', error);
+          }
+        }
+      }
+      
+      function selectPlan(planId, planName) {
+        document.getElementById('selectedPlan').value = planId;
+        const modal = new bootstrap.Modal(document.getElementById('uploadProofModal'));
+        modal.show();
+      }
+      
+      async function submitPaymentProof() {
+        const planId = document.getElementById('selectedPlan').value;
+        const file = document.getElementById('proofFile').files[0];
+        const notes = document.getElementById('proofNotes').value;
+        
+        if (!file) {
+          alert('Please select a proof image');
+          return;
+        }
+        
+        const formData = new FormData();
+        formData.append('plan', planId);
+        formData.append('proof_image', file);
+        formData.append('notes', notes);
+        
+        try {
+          const response = await fetch(`${API_BASE}/merchant/subscriptions/`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${token}`
+            },
+            body: formData
+          });
+          
+          if (response.ok) {
+            alert('Payment proof submitted! Please wait for admin approval.');
+            bootstrap.Modal.getInstance(document.getElementById('uploadProofModal')).hide();
+            loadMerchantStatus();
+          } else {
+            const data = await response.json();
+            alert(data.detail || 'Error submitting proof');
+          }
+        } catch (error) {
+          alert('Connection error. Please try again.');
+        }
+      }
+      
+      // Load merchant products
+      async function loadMerchantProducts() {
+        try {
+          const response = await apiCall('/merchant/products/');
+          const products = await response.json();
+          
+          const table = document.getElementById('productsTable');
+          if (products.length === 0) {
+            table.innerHTML = '<tr><td colspan="4" class="text-center text-white-50 py-4">No assets detected.</td></tr>';
+          } else {
+            table.innerHTML = products.map(p => `
+              <tr>
+                <td>${p.name}</td>
+                <td>$${p.price}</td>
+                <td><span class="badge ${p.is_active ? 'bg-success' : 'bg-secondary'}">${p.is_active ? 'Active' : 'Inactive'}</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-light">Edit</button>
+                </td>
+              </tr>
+            `).join('');
+          }
+        } catch (error) {
+          console.error('Error loading products:', error);
+        }
+      }
+      
+      // Customer: Load products from active merchants
+      async function loadProducts() {
+        try {
+          const response = await apiCall('/customer/products/');
+          const products = await response.json();
+          
+          const grid = document.getElementById('productGrid');
+          if (products.length === 0) {
+            grid.innerHTML = '<div class="col-12 text-center text-white-50 py-5"><p>No products available yet.</p></div>';
+          } else {
+            grid.innerHTML = products.map(p => `
+              <div class="col-md-4">
+                <div class="glass-card p-0 overflow-hidden reveal-scale model-card">
+                  <div class="bg-secondary" style="height: 200px; background: linear-gradient(135deg, #1a1a2e, #16213e);"></div>
+                  <div class="p-4">
+                    <h5>${p.name}</h5>
+                    <p class="text-white-50 small">${p.merchant_name || 'Merchant'}</p>
+                    <p class="text-accent fw-bold">$${p.price}</p>
+                    <button class="btn btn-outline-light btn-sm w-100" onclick="orderProduct(${p.id})">Acquire</button>
+                  </div>
+                </div>
+              </div>
+            `).join('');
+          }
+        } catch (error) {
+          console.error('Error loading products:', error);
+        }
+      }
+      
+      async function orderProduct(productId) {
+        try {
+          const response = await apiCall('/customer/orders/', {
+            method: 'POST',
+            body: JSON.stringify({ product: productId })
+          });
+          
+          if (response.ok) {
+            alert('Order placed successfully!');
+            loadOrders();
+          } else {
+            const data = await response.json();
+            alert(data.detail || 'Error placing order');
+          }
+        } catch (error) {
+          alert('Connection error. Please try again.');
+        }
+      }
+      
+      // Admin functions
+      function showApprovals() {
+        document.getElementById('approvalsSection').classList.toggle('d-none');
+        loadPendingApprovals();
+      }
+      
+      async function loadPendingApprovals() {
+        try {
+          const response = await apiCall('/admin/subscriptions/');
+          const approvals = await response.json();
+          
+          // Filter for pending approvals
+          const pending = Array.isArray(approvals) ? approvals.filter(a => a.status === 'PENDING') : [];
+          
+          const table = document.getElementById('approvalsTable');
+          if (pending.length === 0) {
+            table.innerHTML = '<tr><td colspan="5" class="text-center text-white-50 py-4">No pending approvals.</td></tr>';
+          } else {
+            table.innerHTML = pending.map(a => `
+              <tr>
+                <td>${a.merchant_email || a.merchant?.email || 'N/A'}</td>
+                <td>${a.business_name || a.merchant?.business_name || 'N/A'}</td>
+                <td>${a.plan_name || a.plan?.name || 'N/A'}</td>
+                <td>${new Date(a.submitted_at || a.created_at).toLocaleDateString()}</td>
+                <td>
+                  <button class="btn btn-sm btn-success me-2" onclick="approveSubscription(${a.id})">Approve</button>
+                  <button class="btn btn-sm btn-danger" onclick="rejectSubscription(${a.id})">Reject</button>
+                </td>
+              </tr>
+            `).join('');
+          }
+        } catch (error) {
+          console.error('Error loading approvals:', error);
+        }
+      }
+      
+      async function approveSubscription(id) {
+        try {
+          const response = await apiCall(`/admin/subscriptions/${id}/`, { 
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'APPROVED' })
+          });
+          if (response.ok) {
+            alert('Subscription approved!');
+            loadPendingApprovals();
+          }
+        } catch (error) {
+          alert('Error approving subscription');
+        }
+      }
+      
+      async function rejectSubscription(id) {
+        const reason = prompt('Rejection reason (optional):');
+        try {
+          const response = await apiCall(`/admin/subscriptions/${id}/`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'REJECTED', rejection_reason: reason })
+          });
+          if (response.ok) {
+            alert('Subscription rejected.');
+            loadPendingApprovals();
+          }
+        } catch (error) {
+          alert('Error rejecting subscription');
+        }
+      }
+      
+      function showUsers() {
+        alert('User management coming soon!');
+      }
+      
+      function showPlans() {
+        alert('Plan management coming soon!');
+      }
+      
+      // Initialize
+      initDashboard();
+    </script>
+  </body>
+</html>
